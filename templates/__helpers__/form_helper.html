@@ -1,0 +1,47 @@
+<form method="POST" novalidate>
+    
+    {% csrf_token %}
+    
+    {% for field in form.visible_fields %}
+        <div class="mb-2">
+            <label>{{ field.label }}</label>
+            
+            {% if field.widget_type == 'text' or field.widget_type == 'password' %}
+                <input type="{{ field.widget_type }}" 
+                    name="{{ field.name }}" 
+                    value="{{ field.value|default_if_none:'' }}"
+                    class="form-control">
+            {% elif field.widget_type == 'textarea' %}
+                <textarea name="{{ field.name }}" 
+                    class="form-control"
+                    rows="10">{{ field.value|default_if_none:'' }}</textarea>
+            {% elif field.widget_type == 'select' %}
+                <select name="{{ field.name }}" class="form-select">
+                    {% for value, text in field.field.choices %}
+                        
+                        {% if value == field.value %}
+                            <option value="{{ value }}" selected>{{ text }}</option>
+                        {% else %}
+                            <option value="{{ value }}">{{ text }}</option>
+                        {% endif %}
+                    
+                    {% endfor %}                        
+                </select>
+            {% endif %}     
+                
+            <div class="text-danger">
+                {{ field.errors }}
+            </div>
+        </div>
+    {% endfor %}
+
+    {% if form.non_field_errors %}
+        <hr class="mb-3">
+        <div class="text-danger mb-2">
+            {{ form.non_field_errors }}
+        </div>
+    {% endif %}
+
+    <button class="btn btn-success float-right" type="submit">Отправить</button>
+
+</form>

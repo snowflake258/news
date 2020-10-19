@@ -1,0 +1,37 @@
+{% extends "__layout__/base_layout.html" %}
+
+{% block content %}
+
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item active">Главная</li>
+        </ol>
+    </nav>
+    
+    {% for article in object_list %}
+        <div class="card mb-3">
+            <div class="card-header text-truncate">
+                <a href="{% url 'news_site:article_detail' pk=article.pk %}">
+                    <span class="mr-3">{{ article.published|date:"SHORT_DATETIME_FORMAT" }}</span> 
+                    <span>{{ article.name|rjust:"5" }}</span>
+                </a>
+            </div>
+            <div class="card-body">
+
+                <div class="row">
+                    {% if article.articleimage_set.count > 0 %}
+                        <div class="col" style="max-height: 350px;">
+                            <img class="img-fluid" src="{{ MEDIA_URL }}{{ article.articleimage_set.first.image }}">
+                        </div>
+                    {% endif %}
+                            
+                    <div class="col overflow-hidden" style="max-height: 350px;">{{ article.content }}</div>
+                </div>
+
+            </div>
+        </div>
+    {% empty %}
+        <p class="lead text-info text-center">В данном разделе пока нет новостей.</p>
+    {% endfor %}
+          
+{% endblock content %}

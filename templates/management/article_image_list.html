@@ -1,0 +1,56 @@
+{% extends '__layout__/base_layout.html' %}
+
+{% block content %}
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'management:article_list' %}">Статьи</a></li>
+            <li class="breadcrumb-item active">Изображения статьи</li>
+        </ol>
+    </nav>
+
+    <p class="lead">{{ article.name }}</p>
+
+    <div class="card">
+        <div class="card-body">
+
+            <p class="card-subtitle mb-2 text-muted lead">Добавить изображение</p>
+
+            <form action="{% url 'management:article_image_create' %}" method="POST" novalidate enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="hidden" name="article" value="{{ article.pk }}">
+                <div class="form-file mb-2">
+                    <input type="file" class="form-file-input" name="image">
+                    <label class="form-file-label">
+                        <span class="form-file-text">Выберите изображение...</span>
+                        <span class="form-file-button">Выбрать</span>
+                    </label>
+                </div>
+                <div class="text-right">
+                    <button class="btn btn-success" type="submit">Отправить</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+    
+    {% if object_list %}
+        <div class="row">
+
+            {% for item in object_list %}
+                <div class="col-3 mt-3 position-relative">
+
+                    <img class="img-fluid" src="{{ MEDIA_URL }}{{ item.image }}">
+
+                    <form action="{% url 'management:article_image_delete' pk=item.pk %}" method="POST" class="position-absolute top-0 right-0 mr-3 mt-2">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-link text-dark font-weight-bold">
+                            <i data-feather="x"></i>
+                        </a>
+                    </form>
+
+                </div>
+            {% endfor %}
+
+        </div>
+    {% endif %}
+{% endblock content %}

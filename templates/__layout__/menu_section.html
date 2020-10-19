@@ -1,0 +1,73 @@
+<div class="lead bg-dark mb-3">
+    <ul class="nav">
+
+        <li class="nav-item p-3">
+            <a href="{% url 'news_site:start_page' %}" class="nav-link text-white">
+                <i data-feather="home"></i>
+            </a>
+        </li>
+
+        {% for item in request.categories %}            
+            {% if forloop.counter0 <= 5 %}
+                <li class="nav-item p-3">
+                    <a href="{% url 'news_site:start_page' category=item.pk %}" class="nav-link text-white">{{ item }}</a>
+                </li>
+            {% endif %}                
+        {% endfor %}
+
+        <li class="nav-item p-3 dropdown">
+            <a href="#" class="nav-link dropdown-toggle text-white" data-toggle="dropdown">
+                <i data-feather="menu"></i>
+            </a>
+            <ul class="dropdown-menu">
+
+                {% for item in request.categories %}            
+                    {% if forloop.counter0 >= 6 %}
+                        <li><a href="{% url 'news_site:start_page' category=item.pk %}" class="dropdown-item lead">{{ item.name }}</a></li>
+                    {% endif %}                
+                {% endfor %}
+
+            </ul>
+        </li>
+
+        {% if user.is_anonymous %}
+            <li class="nav-item p-3">
+                <a href="{% url 'account:sign_in' %}" class="nav-link text-white">
+                    <i data-feather="log-in"></i>
+                </a>
+            </li>
+            <li class="nav-item p-3">
+                <a href="{% url 'account:sign_up' %}" class="nav-link text-white">
+                    <i data-feather="user-plus"></i>
+                </a>
+            </li>
+        {% endif %}
+
+        {% if user.is_authenticated %}
+            {% if 'Журналист' in user.groups.all|join:', ' %}
+                <li class="nav-item dropdown p-3">
+                    <a href="#" class="nav-link dropdown-toggle text-white" data-toggle="dropdown">
+                        <i data-feather="settings"></i>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="{% url 'management:category_list' %}">Категории</a></li>
+                        <li><a class="dropdown-item" href="{% url 'management:article_list' %}">Статьи</a></li>
+                    </ul>
+                </li>
+            {% endif %}
+
+            <li class="nav-item p-3 text-white">
+                <a href="#" class="nav-link text-white">
+                    <i class="mr-2" data-feather="user"></i>
+                    <span>{{ user.email }}</span>
+                </a>
+            </li>
+            <li class="nav-item p-3">
+                <a href="{% url 'account:sign_out' %}" class="nav-link text-white">
+                    <i data-feather="log-out"></i>
+                </a>
+            </li>
+        {% endif %}
+        
+    </ul>
+</div>

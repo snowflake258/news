@@ -1,0 +1,14 @@
+{% extends '__layout__/base_layout.html' %}
+
+{% block content %}
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'management:article_list' %}">Статьи</a></li>
+            <li class="breadcrumb-item active">{{ page_name }}</li>
+        </ol>
+    </nav>
+
+    <p class="lead">{{ object_name }}</p>
+    {% include '__helpers__/form_helper.html' %}
+{% endblock content %}
+    

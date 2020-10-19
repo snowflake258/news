@@ -1,0 +1,19 @@
+{% extends '__layout__/base_layout.html' %}
+
+{% block content %}
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'management:category_list' %}">Категории</a></li>
+            <li class="breadcrumb-item active">{{ page_name }}</li>
+        </ol>
+    </nav>
+
+    <p class="lead text-center">Удалить категорию "{{ object_name }}"?</p>
+    <form method="POST" novalidate>
+        {% csrf_token %}
+        <div class="text-center">
+            <button class="btn btn-danger" type="submit">Удалить</button>
+        </div>
+    </form>
+{% endblock content %}
+    

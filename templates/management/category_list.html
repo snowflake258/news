@@ -1,0 +1,32 @@
+{% extends '__layout__/base_layout.html' %}
+
+{% block content %}
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item active">Категории</li>
+        </ol>
+    </nav>
+
+    <p class="lead">
+        <span>Категории</span>
+        <a class="float-right" href="{% url 'management:category_create' %}">
+            <i width="40" height="40" data-feather="plus-circle"></i>
+        </a>
+    </p>
+    
+    <ul class="list-group-flush lead">
+        
+        {% for item in object_list %}
+            <li class="list-group-item">
+                <span>{{ item.name }}</span>
+                <span class="float-right">
+                    <a href="{% url 'management:category_update' pk=item.pk %}" class="link-primary mr-2"><i data-feather="settings"></i></a>
+                    <a href="{% url 'management:category_delete' pk=item.pk %}" class="link-danger"><i data-feather="trash-2"></i></a>
+                </span>
+            </li>
+        {% endfor %}
+
+    </ul>
+
+    {% include '__helpers__/pagination_helper.html' %}
+{% endblock content %}
